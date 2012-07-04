@@ -18,6 +18,7 @@ Right now I've only added 24-bit > 8-bit crushing. Goal is to integrate all the 
 				'/some-image.png',
 				'/other/images/**/*.png'
 			],
+			dest: '/where/to/save/images', // Optional, will overwrite images if omitted.
 			eightbit: true
 		}
 	}
@@ -25,6 +26,7 @@ Right now I've only added 24-bit > 8-bit crushing. Goal is to integrate all the 
 
 ##Changelog
 
+* v0.1.1 Add optional destination/export directory.
 * v0.1.0 Initial release.
 
 
