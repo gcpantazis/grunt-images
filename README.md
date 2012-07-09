@@ -30,6 +30,10 @@ Currently: Uses `pngnq` for PNG quantization, `pngoptim` for trimming excess dat
 
 ##Changelog
 
+Current: v0.1.3
+
+Major Changes:
+
 * v0.1.2 Adding `pngoptim`, start working on how different bins will operate together.
 * v0.1.1 Add optional destination/export directory.
 * v0.1.0 Initial release.
