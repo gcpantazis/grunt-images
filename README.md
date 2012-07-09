@@ -1,8 +1,10 @@
-# grunt-crusher
+#grunt-crusher
 
-A grunt plugin that will straight-up crush some images.
+A grunt plugin that will straight-up crush some images. **Very alpha.**
 
-Right now I've only added 24-bit > 8-bit crushing. Goal is to integrate all the different smashers/smushers/crunchers that you could possibly need for all image types.
+By "very alpha", I mean that you should be sure you're not pointing it at any images that don't have backups / can't be regenerated easily. For your own safety.
+
+Currently: Uses `pngnq` for PNG quantization, `pngoptim` for trimming excess data out of the files.
 
 ##How to use
 
@@ -15,17 +17,20 @@ Right now I've only added 24-bit > 8-bit crushing. Goal is to integrate all the 
 	crusher: {
 		app: {
 			files: [
-				'/some-image.png',
-				'/other/images/**/*.png'
+				IMAGES + '/icons-*.png'
 			],
-			dest: '/where/to/save/images', // Optional, will overwrite images if omitted.
-			eightbit: true
+			dest: IMAGES + '/optimized', // optional
+			options: {
+				eightbit: true,
+				pngout: true
+			}
 		}
 	}
 	```
 
 ##Changelog
 
+* v0.1.2 Adding `pngoptim`, start working on how different bins will operate together.
 * v0.1.1 Add optional destination/export directory.
 * v0.1.0 Initial release.
 

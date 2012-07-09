@@ -1,7 +1,7 @@
 {
   "name": "grunt-crusher",
   "description": "A grunt plugin that will straight-up crush some images.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/gcpantazis/grunt-crusher",
   "author": {
     "name": "George Pantazis",
@@ -30,12 +30,5 @@
   "devDependencies": {},
   "keywords": [
     "gruntplugin"
-  ],
-  "_id": "grunt-crusher@0.1.1",
-  "optionalDependencies": {},
-  "_engineSupported": true,
-  "_npmVersion": "1.1.15",
-  "_nodeVersion": "v0.8.0",
-  "_defaultsLoaded": true,
-  "_from": "grunt-crusher@>= 0.1.1"
+  ]
 }
