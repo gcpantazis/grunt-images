@@ -14,15 +14,15 @@ module.exports = function(grunt) {
 
 		// Tell grunt this task is asynchronous.
 		var done = this.async(),
-			options = this.data.options,
-			dest = this.data.dest,
+			crusherTasks = this.data.crusherTasks,
+			dest = this.data.destination,
 			files = grunt.file.expandFiles(this.data.files),
 			fileCount = files.length;
 
-		if ( !options ) return;
-
-		var eightbit = options.eightbit,
-			pngout = options.pngout;
+		if ( !crusherTasks ) {
+			grunt.log.error('Crusher: crusherTasks was not defined.');
+			return;
+		}
 
 		var fileIterator = 0;
 
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 			var tasks = [];
 			var cbIterator = 0;
 
-			for ( var i in options ) {
+			for ( var i in crusherTasks ) {
 				tasks.push(i);
 			}
 
@@ -61,11 +61,11 @@ module.exports = function(grunt) {
 				} else {
 
 					switch (tasks[which]) {
-						case 'eightbit':
-							grunt.helper('pngquant', tempFilePath, cbRouter);
+						case 'pngquant':
+							grunt.helper('pngquant', crusherTasks.pngquant, tempFilePath, cbRouter);
 						break;
 						case 'pngout':
-							grunt.helper('pngout', tempFilePath, cbRouter);
+							grunt.helper('pngout', crusherTasks.pngout, tempFilePath, cbRouter);
 						break;
 						default:
 					}
@@ -126,9 +126,9 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.registerHelper('pngquant', function(filepath, callback) {
+	grunt.registerHelper('pngquant', function(binLocation, filepath, callback) {
 
-		var command = __dirname + "/../bin/pngquant -s 1 -force -ext .png 256 ";
+		var command = binLocation + " -s 1 -force -ext .png 256 ";
 
 		command += filepath;
 
@@ -139,9 +139,9 @@ module.exports = function(grunt) {
 		});
 	});
 
-	grunt.registerHelper('pngout', function(filepath, callback) {
+	grunt.registerHelper('pngout', function(binLocation, filepath, callback) {
 
-		var command = __dirname + "/../bin/pngout " + filepath;
+		var command = binLocation + " " + filepath;
 
 		exec( command, function(err) {
 
