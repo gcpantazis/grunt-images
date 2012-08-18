@@ -14,13 +14,22 @@ module.exports = function(grunt) {
 
 		// Tell grunt this task is asynchronous.
 		var done = this.async(),
+			imageDirectory = this.data.imageDirectory,
 			crusherTasks = this.data.crusherTasks,
 			dest = this.data.destination,
+			keepDirectoryStructure = this.data.keepDirectoryStructure,
 			files = grunt.file.expandFiles(this.data.files),
 			fileCount = files.length;
 
 		if ( !crusherTasks ) {
-			grunt.log.error('Crusher: crusherTasks was not defined.');
+			grunt.log.error('Crusher Error: crusherTasks was not defined.');
+			done(false);
+			return;
+		}
+
+		if ( !imageDirectory ) {
+			grunt.log.error('Crusher Error: imageDirectory was not defined.');
+			done(false);
 			return;
 		}
 
@@ -31,6 +40,12 @@ module.exports = function(grunt) {
 		}
 
 		files.forEach(function( filepath ) {
+
+			if ( !filepath.match(imageDirectory) ) {
+				grunt.log.error('Crusher Error: File ' + filepath + ' was not within imageDirectory. Skipping.');
+				fileIterator++;
+				return;
+			}
 
 			var tempFilePath;
 			var tasks = [];
@@ -77,7 +92,17 @@ module.exports = function(grunt) {
 				var destinationPath = filepath;
 
 				if ( dest !== undefined ) {
-					destinationPath = dest + "/" + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
+
+					if ( !keepDirectoryStructure ) {
+						destinationPath = dest + "/" + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
+					} else {
+						var relativeFilePath = filepath.split(imageDirectory)[1],
+							fileName = filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0],
+							relativeDirectory = relativeFilePath.split(fileName)[0];
+
+						destinationPath = dest + relativeDirectory + fileName;
+					}
+
 				}
 
 				grunt.helper('updateOriginalFile', destinationPath, tempFilePath);
@@ -105,7 +130,7 @@ module.exports = function(grunt) {
 
 	grunt.registerHelper('createTempFile', function(originalPath, callback){
 
-		var tempPath = originalPath.replace('.png', '-temp.png');
+		var tempPath = originalPath.replace('.png', '-gruntCrusherTemp.png');
 
 		grunt.file.copy(originalPath, tempPath);
 
