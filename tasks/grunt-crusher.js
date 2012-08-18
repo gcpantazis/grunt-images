@@ -108,7 +108,26 @@ module.exports = function(grunt) {
 				grunt.helper('updateOriginalFile', destinationPath, tempFilePath);
 				grunt.helper('deleteTempFile', tempFilePath, function() {
 
-					grunt.log.writeln('CRUSHED: ' + filepath);
+					var oldFile = grunt.file.read(filepath);
+					var newFile = grunt.file.read(destinationPath);
+
+					var savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
+
+					if ( filepath !== destinationPath ) {
+						grunt.log.writeln(
+							'CRUSHED: ' +
+							filepath.split(imageDirectory)[1] +
+							' => ' +
+							destinationPath.split(imageDirectory)[1] +
+							' [ ' + savings + '% Compression ]'
+						);
+					} else {
+						grunt.log.writeln(
+							'CRUSHED: ' +
+							filepath.split(imageDirectory)[1] +
+							' [ ' + savings + '% Compression ]'
+						);
+					}
 
 					fileIterator++
 

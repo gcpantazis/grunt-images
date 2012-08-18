@@ -61,7 +61,7 @@ Currently supports `pngquant` for PNG quantization, `pngout` for trimming excess
 
 ##Changelog
 
-Current: v0.1.6
+Current: v0.1.7
 
 Major Changes:
 
