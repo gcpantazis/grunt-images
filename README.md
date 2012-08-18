@@ -1,10 +1,6 @@
 #grunt-crusher
 
-A grunt plugin that will straight-up crush some images. **Very alpha.**
-
-By "very alpha", I mean that you should be sure you're not pointing it at any images that don't have backups / can't be regenerated easily. For your own safety.
-
-Currently supports `pngquant` for PNG quantization, `pngout` for trimming excess data out of the files. As part of the task you need to point crusher at the bins, which you'll either need to find or compile in your build env of choice.
+A grunt plugin that will straight-up crush some images.
 
 ##How to use
 
