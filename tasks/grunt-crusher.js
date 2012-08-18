@@ -77,7 +77,7 @@ module.exports = function(grunt) {
 				var destinationPath = filepath;
 
 				if ( dest !== undefined ) {
-					destinationPath = dest + "/" + filepath.match(/[-_\w]+[.][\w]+$/i)[0];
+					destinationPath = dest + "/" + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
 				}
 
 				grunt.helper('updateOriginalFile', destinationPath, tempFilePath);
