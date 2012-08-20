@@ -52,6 +52,12 @@ module.exports = function(grunt) {
 			var cbIterator = 0;
 
 			for ( var i in crusherTasks ) {
+
+				if (!crusherTasks[i].binLocation) {
+					grunt.log.error('Crusher Error: Task ' + i + ' did not provide a bin location.');
+					return;
+				}
+
 				tasks.push(i);
 			}
 
@@ -77,10 +83,10 @@ module.exports = function(grunt) {
 
 					switch (tasks[which]) {
 						case 'pngquant':
-							grunt.helper('pngquant', crusherTasks.pngquant, tempFilePath, cbRouter);
+							grunt.helper('pngquant', crusherTasks.pngquant.binLocation, tempFilePath, cbRouter);
 						break;
 						case 'pngout':
-							grunt.helper('pngout', crusherTasks.pngout, tempFilePath, cbRouter);
+							grunt.helper('pngout', crusherTasks.pngout.binLocation, tempFilePath, cbRouter);
 						break;
 						default:
 					}

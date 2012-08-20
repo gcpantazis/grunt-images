@@ -11,17 +11,18 @@ A grunt plugin that will straight-up crush some images.
 
 	```
 	crusher: {
-		task-one: {
+		taskOne: {
 			imageDirectory: '/path/to/images/',
 			files: [
 				'/path/to/images/foo-*.png',
 			],
 			crusherTasks: {
-				pngquant: 'path/to/pngquant',
-				pngout: 'path/to/pngout'
+				pngquant: {
+					binLocation: './bin/pngquant'
+				}
 			}
 		},
-		task-two: {
+		taskTwo: {
 			imageDirectory: '/path/to/images/',
 			files: [
 				'/path/to/images/foo/*.png',
@@ -31,7 +32,12 @@ A grunt plugin that will straight-up crush some images.
 			destination: IMAGES + '/optimized',
 			keepDirectoryStructure: true,
 			crusherTasks: {
-				pngquant: 'path/to/pngquant'
+				pngquant: {
+					binLocation: './bin/pngquant'
+				},
+				pngout: {
+					binLocation: './bin/pngout'
+				}
 			}
 		}
 	}
@@ -47,7 +53,7 @@ A grunt plugin that will straight-up crush some images.
 
 `keepDirectoryStructure` *optional* : If omitted or set to false, the destination folder will be flat. If set to true, destination folder will contain the original files' folder structure relative to `imageDirectory`.
 
-`crusherTasks` ***required*** : Provide locations to bins that correlate with each of the supported libraries.
+`crusherTasks` ***required*** : Configure each bin. (TODO: Add config options in *supported libraries* section once available).
 
 ##Supported Libraries
 
@@ -57,7 +63,7 @@ A grunt plugin that will straight-up crush some images.
 
 ##Changelog
 
-Current: v0.1.7
+Current: v0.1.8
 
 Major Changes:
 
