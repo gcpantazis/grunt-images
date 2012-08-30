@@ -33,6 +33,12 @@ module.exports = function(grunt) {
 			return;
 		}
 
+		if ( files.length === 0 ) {
+			grunt.log.error('Crusher Error: No images matched.');
+			done(true);
+			return;
+		}
+
 		var fileIterator = 0;
 
 		if ( dest !== undefined ) {
