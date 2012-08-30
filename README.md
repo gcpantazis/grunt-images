@@ -63,10 +63,11 @@ A grunt plugin that will straight-up crush some images.
 
 ##Changelog
 
-Current: v0.1.8
+Current: v0.1.9
 
 Major Changes:
 
+* v0.1.9 Added tests, some refactoring on logging.
 * v0.1.6 Add `imageDirectory` and `keepDirectoryStructure` settings.
 * v0.1.4 Make it so that you have to define the bin locations as part of the task; making it platform independant was too tricky here. `dest` -> `destination` in task settings.
 * v0.1.2 Adding `pngout`, start working on how different bins will operate together.
