@@ -1,8 +1,7 @@
 module.exports = function(grunt) {
 
-	var ROOT = '.';
-	var IMAGES = ROOT + '/images';
-	var BINS = ROOT + '/bins';
+	var IMAGES = 'images';
+	var BINS = 'bins';
 
 	// Project configuration.
 	grunt.initConfig({
@@ -11,7 +10,7 @@ module.exports = function(grunt) {
 			taskOne: {
 				imageDirectory: IMAGES,
 				files: [
-					IMAGES + '/path/to/images/foo-*.png',
+					IMAGES + '/dice.png',
 				],
 				crusherTasks: {
 					pngquant: {
@@ -20,13 +19,11 @@ module.exports = function(grunt) {
 				}
 			},
 			taskTwo: {
-				imageDirectory: '/path/to/images/',
+				imageDirectory: IMAGES,
 				files: [
-					IMAGES + '/path/to/images/foo/*.png',
-					IMAGES + '/path/to/images/bar/*.png',
-					IMAGES + '/path/to/images/baz/*.png'
+					IMAGES + '/deep/directory/foo/*.png'
 				],
-				destination: ROOT + '/optimized',
+				destination: 'optimized',
 				keepDirectoryStructure: true,
 				crusherTasks: {
 					pngquant: {

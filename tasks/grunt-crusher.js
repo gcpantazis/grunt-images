@@ -126,17 +126,18 @@ module.exports = function(grunt) {
 					var savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
 
 					if ( filepath !== destinationPath ) {
+
 						grunt.log.writeln(
 							'CRUSHED: ' +
-							filepath.split(imageDirectory)[1] +
+							filepath +
 							' => ' +
-							destinationPath.split(imageDirectory)[1] +
+							destinationPath +
 							' [ ' + savings + '% Compression ]'
 						);
 					} else {
 						grunt.log.writeln(
 							'CRUSHED: ' +
-							filepath.split(imageDirectory)[1] +
+							filepath +
 							' [ ' + savings + '% Compression ]'
 						);
 					}
