@@ -219,8 +219,6 @@ module.exports = function(grunt) {
 
 		command += ' ' + filepath;
 
-		console.log(command);
-
 		exec( command, function(err) {
 
 			callback(err);

@@ -26,15 +26,15 @@ module.exports = function(grunt) {
 				destination: 'optimized',
 				keepDirectoryStructure: true,
 				crusherTasks: {
+					convert: {
+						binLocation: 'convert',
+						resizeDimension: '50%'
+					},
 					pngquant: {
 						binLocation: BINS + '/pngquant'
 					},
 					pngout: {
 						binLocation: BINS + '/pngout'
-					},
-					convert: {
-						binLocation: 'convert',
-						resizeDimension: '50%'
 					}
 				}
 			}

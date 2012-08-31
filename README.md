@@ -65,7 +65,7 @@ A grunt plugin that will straight-up crush some images.
 
 ##Changelog
 
-Current: v0.1.10
+Current: v0.1.11
 
 Major Changes:
 
