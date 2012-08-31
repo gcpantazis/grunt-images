@@ -61,12 +61,15 @@ A grunt plugin that will straight-up crush some images.
 
 `pngout`
 
+`convert` : Experimental; I have it configured with a global install that I compile per-machine, which seems to be the way to go with imagemagick. See the tests for usage.
+
 ##Changelog
 
-Current: v0.1.9
+Current: v0.1.10
 
 Major Changes:
 
+* v0.1.10 Added experimental support for `convert`, initially for resize.
 * v0.1.9 Added tests, some refactoring on logging.
 * v0.1.6 Add `imageDirectory` and `keepDirectoryStructure` settings.
 * v0.1.4 Make it so that you have to define the bin locations as part of the task; making it platform independant was too tricky here. `dest` -> `destination` in task settings.

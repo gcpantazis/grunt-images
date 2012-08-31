@@ -9,8 +9,9 @@
 module.exports = function(grunt) {
 
 	var exec = require('child_process').exec;
+	var _ = require('underscore');
 
-	grunt.registerMultiTask( "crusher", "Crushes your images.", function() {
+	grunt.registerMultiTask( 'crusher', 'Crushes your images.', function() {
 
 		// Tell grunt this task is asynchronous.
 		var done = this.async(),
@@ -94,6 +95,9 @@ module.exports = function(grunt) {
 						case 'pngout':
 							grunt.helper('pngout', crusherTasks.pngout.binLocation, tempFilePath, cbRouter);
 						break;
+						case 'convert':
+							grunt.helper('convert', crusherTasks.convert.binLocation, crusherTasks.convert.resizeDimension, tempFilePath, cbRouter);
+						break;
 						default:
 					}
 				}
@@ -106,7 +110,7 @@ module.exports = function(grunt) {
 				if ( dest !== undefined ) {
 
 					if ( !keepDirectoryStructure ) {
-						destinationPath = dest + "/" + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
+						destinationPath = dest + '/' + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
 					} else {
 						var relativeFilePath = filepath.split(imageDirectory)[1],
 							fileName = filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0],
@@ -185,7 +189,7 @@ module.exports = function(grunt) {
 
 	grunt.registerHelper('pngquant', function(binLocation, filepath, callback) {
 
-		var command = binLocation + " -s 1 -force -ext .png 256 ";
+		var command = binLocation + ' -s 1 -force -ext .png 256 ';
 
 		command += filepath;
 
@@ -198,7 +202,7 @@ module.exports = function(grunt) {
 
 	grunt.registerHelper('pngout', function(binLocation, filepath, callback) {
 
-		var command = binLocation + " " + filepath;
+		var command = binLocation + ' ' + filepath;
 
 		exec( command, function(err) {
 
@@ -206,4 +210,22 @@ module.exports = function(grunt) {
 
 		});
 	});
+
+	grunt.registerHelper('convert', function(binLocation, resizeDimension, filepath, callback) {
+
+		var command = binLocation + ' ' + filepath;
+
+		command += ' -resize ' + resizeDimension;
+
+		command += ' ' + filepath;
+
+		console.log(command);
+
+		exec( command, function(err) {
+
+			callback(err);
+
+		});
+	});
+
 };

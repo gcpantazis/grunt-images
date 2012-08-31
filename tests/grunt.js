@@ -31,6 +31,10 @@ module.exports = function(grunt) {
 					},
 					pngout: {
 						binLocation: BINS + '/pngout'
+					},
+					convert: {
+						binLocation: 'convert',
+						resizeDimension: '50%'
 					}
 				}
 			}
