@@ -97,13 +97,13 @@ module.exports = function(grunt) {
 
 					switch (tasks[which]) {
 						case 'pngquant':
-							grunt.helper('pngquant', crusherTasks.pngquant.binLocation, tempFilePath, cbRouter);
+							grunt.helper('pngquant', crusherTasks.pngquant, tempFilePath, cbRouter);
 						break;
 						case 'pngout':
-							grunt.helper('pngout', crusherTasks.pngout.binLocation, tempFilePath, cbRouter);
+							grunt.helper('pngout', crusherTasks.pngout, tempFilePath, cbRouter);
 						break;
 						case 'convert':
-							grunt.helper('convert', crusherTasks.convert.binLocation, crusherTasks.convert.resizeDimension, tempFilePath, cbRouter);
+							grunt.helper('convert', crusherTasks.convert, tempFilePath, cbRouter);
 						break;
 						default:
 					}
@@ -136,30 +136,8 @@ module.exports = function(grunt) {
 
 				}
 
-				grunt.helper('updateOriginalFile', destinationPath, tempFilePath);
+				grunt.helper('updateOriginalFile', filepath, destinationPath, tempFilePath);
 				grunt.helper('deleteTempFile', tempFilePath, function() {
-
-					var oldFile = grunt.file.read(filepath);
-					var newFile = grunt.file.read(destinationPath);
-
-					var savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
-
-					if ( filepath !== destinationPath ) {
-
-						grunt.log.writeln(
-							'CRUSHED: ' +
-							filepath +
-							' => ' +
-							destinationPath +
-							' [ ' + savings + '% Compression ]'
-						);
-					} else {
-						grunt.log.writeln(
-							'CRUSHED: ' +
-							filepath +
-							' [ ' + savings + '% Compression ]'
-						);
-					}
 
 					fileIterator++
 
@@ -174,6 +152,7 @@ module.exports = function(grunt) {
 
 				tempFilePath = tempPath;
 				doNextProcess(0);
+
 			});
 
 		});
@@ -188,7 +167,28 @@ module.exports = function(grunt) {
 		callback(tempPath);
 	});
 
-	grunt.registerHelper('updateOriginalFile', function(destinationPath, tempPath){
+	grunt.registerHelper('updateOriginalFile', function(originalPath, destinationPath, tempPath){
+
+		var oldFile = grunt.file.read(originalPath);
+		var newFile = grunt.file.read(tempPath);
+		var savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
+
+		if ( originalPath !== destinationPath ) {
+
+			grunt.log.writeln(
+				'CRUSHED: ' +
+				originalPath +
+				' => ' +
+				destinationPath +
+				' [ ' + savings + '% Compression ]'
+			);
+		} else {
+			grunt.log.writeln(
+				'CRUSHED: ' +
+				originalPath +
+				' [ ' + savings + '% Compression ]'
+			);
+		}
 
 		grunt.file.copy(tempPath, destinationPath);
 
@@ -202,9 +202,9 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.registerHelper('pngquant', function(binLocation, filepath, callback) {
+	grunt.registerHelper('pngquant', function(pngquantTask, filepath, callback) {
 
-		var command = binLocation + ' -s 1 -force -ext .png 256 ';
+		var command = pngquantTask.binLocation + ' -s 1 -force -ext .png 256 ';
 
 		command += filepath;
 
@@ -215,9 +215,9 @@ module.exports = function(grunt) {
 		});
 	});
 
-	grunt.registerHelper('pngout', function(binLocation, filepath, callback) {
+	grunt.registerHelper('pngout', function(pngoutTask, filepath, callback) {
 
-		var command = binLocation + ' ' + filepath;
+		var command = pngoutTask.binLocation + ' ' + filepath;
 
 		exec( command, function(err) {
 
@@ -226,11 +226,13 @@ module.exports = function(grunt) {
 		});
 	});
 
-	grunt.registerHelper('convert', function(binLocation, resizeDimension, filepath, callback) {
+	grunt.registerHelper('convert', function(convertTask, filepath, callback) {
 
-		var command = binLocation + ' ' + filepath;
+		var command = convertTask.binLocation + ' ' + filepath;
 
-		command += ' -resize ' + resizeDimension;
+		if ( convertTask.resizeDimension ) {
+			command += ' -resize ' + convertTask.resizeDimension;
+		}
 
 		command += ' ' + filepath;
 

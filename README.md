@@ -1,6 +1,6 @@
 #grunt-crusher
 
-A grunt plugin that will straight-up crush some images.
+A grunt plugin for processing images.
 
 ##How to use
 
