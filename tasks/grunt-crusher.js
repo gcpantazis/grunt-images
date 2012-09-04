@@ -19,11 +19,18 @@ module.exports = function(grunt) {
 			crusherTasks = this.data.crusherTasks,
 			dest = this.data.destination,
 			keepDirectoryStructure = this.data.keepDirectoryStructure,
+			outputSuffix = this.data.outputSuffix,
 			files = grunt.file.expandFiles(this.data.files),
 			fileCount = files.length;
 
 		if ( !crusherTasks ) {
 			grunt.log.error('Crusher Error: crusherTasks was not defined.');
+			done(false);
+			return;
+		}
+
+		if ( !dest && outputSuffix ) {
+			grunt.log.error('Crusher Error: "outputSuffix" was set, but "destination" was not. Please set both if using "outputSuffix".');
 			done(false);
 			return;
 		}
@@ -117,6 +124,14 @@ module.exports = function(grunt) {
 							relativeDirectory = relativeFilePath.split(fileName)[0];
 
 						destinationPath = dest + relativeDirectory + fileName;
+					}
+
+					if ( outputSuffix ) {
+
+						var splitPath = destinationPath.split('.');
+						splitPath[splitPath.length - 2] += outputSuffix;
+						destinationPath = splitPath.join('.');
+
 					}
 
 				}

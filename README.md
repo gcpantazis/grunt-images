@@ -51,6 +51,8 @@ A grunt plugin that will straight-up crush some images.
 
 `destination` *optional* : If provided, copies files to the destination directory after optimizations are complete. If omitted, replaces original with optimized file.
 
+`outputSuffix` *optional* : Use to add a suffix onto output filenames (someimage.jpg -> someimage_foo.jpg). Requires `destination`.
+
 `keepDirectoryStructure` *optional* : If omitted or set to false, the destination folder will be flat. If set to true, destination folder will contain the original files' folder structure relative to `imageDirectory`.
 
 `crusherTasks` ***required*** : Configure each bin. (TODO: Add config options in *supported libraries* section once available).
@@ -65,10 +67,11 @@ A grunt plugin that will straight-up crush some images.
 
 ##Changelog
 
-Current: v0.1.11
+Current: v0.1.12
 
 Major Changes:
 
+* v0.1.12 Added `outputSuffix`.
 * v0.1.10 Added experimental support for `convert`, initially for resize.
 * v0.1.9 Added tests, some refactoring on logging.
 * v0.1.6 Add `imageDirectory` and `keepDirectoryStructure` settings.

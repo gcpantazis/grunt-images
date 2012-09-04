@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 
 		crusher: {
+
 			taskOne: {
 				imageDirectory: IMAGES,
 				files: [
@@ -18,12 +19,14 @@ module.exports = function(grunt) {
 					}
 				}
 			},
+
 			taskTwo: {
 				imageDirectory: IMAGES,
 				files: [
 					IMAGES + '/deep/directory/foo/*.png'
 				],
 				destination: 'optimized',
+				outputSuffix: '_foo',
 				keepDirectoryStructure: true,
 				crusherTasks: {
 					convert: {
@@ -38,6 +41,7 @@ module.exports = function(grunt) {
 					}
 				}
 			}
+
 		}
 
 	});
