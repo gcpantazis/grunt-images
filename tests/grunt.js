@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 
 		crusher: {
 
-			taskOne: {
+			plainCrush: {
 				imageDirectory: IMAGES,
 				files: [
 					IMAGES + '/dice.png',
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 				}
 			},
 
-			originals: {
+			PNGoriginals: {
 				imageDirectory: IMAGES,
 				files: [
 					IMAGES + '/deep/directory/foo/*.png'
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
 				}
 			},
 
-			medium: {
+			PNGmedium: {
 				imageDirectory: IMAGES,
 				files: [
 					IMAGES + '/deep/directory/foo/*.png'
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
 				}
 			},
 
-			small: {
+			PNGsmall: {
 				imageDirectory: IMAGES,
 				files: [
 					IMAGES + '/deep/directory/foo/*.png'
@@ -81,6 +81,22 @@ module.exports = function(grunt) {
 					},
 					pngout: {
 						binLocation: BINS + '/pngout'
+					}
+				}
+			},
+
+			JPEGresize: {
+				imageDirectory: IMAGES,
+				files: [
+					IMAGES + '/resize_originals/*.jpg'
+				],
+				destination: 'optimized/jpeg_resizes',
+				outputSuffix: '_thumb',
+				crusherTasks: {
+					convert: {
+						binLocation: BINS + '/convert',
+						resizeDimension: '300x300',
+						quality: 25
 					}
 				}
 			}

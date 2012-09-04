@@ -67,7 +67,7 @@ A grunt plugin for processing images.
 
 ##Changelog
 
-Current: v0.1.12
+Current: v0.1.13
 
 Major Changes:
 
@@ -79,7 +79,6 @@ Major Changes:
 * v0.1.2 Adding `pngout`, start working on how different bins will operate together.
 * v0.1.1 Add optional destination/export directory.
 * v0.1.0 Initial release.
-
 
 ## License
 Copyright (c) 2012 George Pantazis

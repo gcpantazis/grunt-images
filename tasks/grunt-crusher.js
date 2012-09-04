@@ -160,7 +160,11 @@ module.exports = function(grunt) {
 
 	grunt.registerHelper('createTempFile', function(originalPath, callback){
 
-		var tempPath = originalPath.replace('.png', '-gruntCrusherTemp.png');
+		var tempPath = originalPath;
+
+		// This should be smarter, obvious ways this could fail.
+		tempPath = tempPath.replace('.png', '-gruntCrusherTemp.png');
+		tempPath = tempPath.replace('.jpg', '-gruntCrusherTemp.jpg');
 
 		grunt.file.copy(originalPath, tempPath);
 
@@ -232,6 +236,10 @@ module.exports = function(grunt) {
 
 		if ( convertTask.resizeDimension ) {
 			command += ' -resize ' + convertTask.resizeDimension;
+		}
+
+		if ( convertTask.quality ) {
+			command += ' -quality ' + convertTask.quality;
 		}
 
 		command += ' ' + filepath;
