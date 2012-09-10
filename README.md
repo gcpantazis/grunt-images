@@ -67,7 +67,7 @@ A grunt plugin for processing images.
 
 ##Changelog
 
-Current: v0.1.13
+Current: v0.1.14
 
 Major Changes:
 
