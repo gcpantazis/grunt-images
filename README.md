@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/gcpantazis/grunt-crusher.png)](http://travis-ci.org/gcpantazis/grunt-crusher)
 #grunt-crusher
 
 A grunt plugin for processing images.
