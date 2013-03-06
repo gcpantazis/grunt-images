@@ -10,9 +10,7 @@ module.exports = function(grunt) {
 
 			plainCrush: {
 				imageDirectory: IMAGES,
-				files: [
-					IMAGES + '/dice.png',
-				],
+				files: IMAGES + '/dice.png',
 				crusherTasks: {
 					pngquant: {
 						binLocation: BINS + '/pngquant'
@@ -25,9 +23,7 @@ module.exports = function(grunt) {
 
 			PNGoriginals: {
 				imageDirectory: IMAGES,
-				files: [
-					IMAGES + '/deep/directory/foo/*.png'
-				],
+				files: IMAGES + '/deep/directory/foo/*.png',
 				destination: 'optimized/resizes',
 				outputSuffix: '_full',
 				keepDirectoryStructure: true,
@@ -43,9 +39,7 @@ module.exports = function(grunt) {
 
 			PNGmedium: {
 				imageDirectory: IMAGES,
-				files: [
-					IMAGES + '/deep/directory/foo/*.png'
-				],
+				files: IMAGES + '/deep/directory/foo/*.png',
 				destination: 'optimized/resizes',
 				outputSuffix: '_medium',
 				keepDirectoryStructure: true,
@@ -65,9 +59,7 @@ module.exports = function(grunt) {
 
 			PNGsmall: {
 				imageDirectory: IMAGES,
-				files: [
-					IMAGES + '/deep/directory/foo/*.png'
-				],
+				files: IMAGES + '/deep/directory/foo/*.png',
 				destination: 'optimized/resizes',
 				outputSuffix: '_small',
 				keepDirectoryStructure: true,
@@ -87,9 +79,7 @@ module.exports = function(grunt) {
 
 			JPEGresize: {
 				imageDirectory: IMAGES,
-				files: [
-					IMAGES + '/resize_originals/*.jpg'
-				],
+				files: IMAGES + '/resize_originals/*.jpg',
 				destination: 'optimized/jpeg_resizes',
 				outputSuffix: '_thumb',
 				crusherTasks: {

@@ -67,10 +67,11 @@ A grunt plugin for processing images.
 
 ##Changelog
 
-Current: v0.1.14
+Current: v0.1.15
 
 Major Changes:
 
+* v0.1.15 Upgrade for Grunt 0.4 compatibility.
 * v0.1.12 Added `outputSuffix`.
 * v0.1.10 Added experimental support for `convert`, initially for resize.
 * v0.1.9 Added tests, some refactoring on logging.

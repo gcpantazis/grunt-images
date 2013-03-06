@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			dest = this.data.destination,
 			keepDirectoryStructure = this.data.keepDirectoryStructure,
 			outputSuffix = this.data.outputSuffix,
-			files = grunt.file.expandFiles(this.data.files),
+			files = grunt.file.expand(this.data.files),
 			fileCount = files.length;
 
 		if ( !crusherTasks ) {
@@ -97,13 +97,13 @@ module.exports = function(grunt) {
 
 					switch (tasks[which]) {
 						case 'pngquant':
-							grunt.helper('pngquant', crusherTasks.pngquant, tempFilePath, cbRouter);
+							pngquant(crusherTasks.pngquant, tempFilePath, cbRouter);
 						break;
 						case 'pngout':
-							grunt.helper('pngout', crusherTasks.pngout, tempFilePath, cbRouter);
+							pngout(crusherTasks.pngout, tempFilePath, cbRouter);
 						break;
 						case 'convert':
-							grunt.helper('convert', crusherTasks.convert, tempFilePath, cbRouter);
+							convert(crusherTasks.convert, tempFilePath, cbRouter);
 						break;
 						default:
 					}
@@ -136,8 +136,8 @@ module.exports = function(grunt) {
 
 				}
 
-				grunt.helper('updateOriginalFile', filepath, destinationPath, tempFilePath);
-				grunt.helper('deleteTempFile', tempFilePath, function() {
+				updateOriginalFile(filepath, destinationPath, tempFilePath);
+				deleteTempFile(tempFilePath, function() {
 
 					fileIterator++
 
@@ -148,7 +148,7 @@ module.exports = function(grunt) {
 				});
 			}
 
-			grunt.helper('createTempFile', filepath, function(tempPath){
+			createTempFile(filepath, function(tempPath){
 
 				tempFilePath = tempPath;
 				doNextProcess(0);
@@ -158,7 +158,7 @@ module.exports = function(grunt) {
 		});
 	});
 
-	grunt.registerHelper('createTempFile', function(originalPath, callback){
+	var createTempFile = function(originalPath, callback){
 
 		var tempPath = originalPath;
 
@@ -169,9 +169,9 @@ module.exports = function(grunt) {
 		grunt.file.copy(originalPath, tempPath);
 
 		callback(tempPath);
-	});
+	};
 
-	grunt.registerHelper('updateOriginalFile', function(originalPath, destinationPath, tempPath){
+	updateOriginalFile = function(originalPath, destinationPath, tempPath){
 
 		var oldFile = grunt.file.read(originalPath);
 		var newFile = grunt.file.read(tempPath);
@@ -196,17 +196,17 @@ module.exports = function(grunt) {
 
 		grunt.file.copy(tempPath, destinationPath);
 
-	});
+	};
 
-	grunt.registerHelper('deleteTempFile', function(path, callback){
+	deleteTempFile = function(path, callback){
 
 		exec('rm ' + path, function(){
 			if (callback) callback();
 		});
 
-	});
+	};
 
-	grunt.registerHelper('pngquant', function(pngquantTask, filepath, callback) {
+	pngquant = function(pngquantTask, filepath, callback) {
 
 		var command = pngquantTask.binLocation + ' -s 1 -force -ext .png 256 ';
 
@@ -217,9 +217,9 @@ module.exports = function(grunt) {
 			callback(err);
 
 		});
-	});
+	};
 
-	grunt.registerHelper('pngout', function(pngoutTask, filepath, callback) {
+	pngout = function(pngoutTask, filepath, callback) {
 
 		var command = pngoutTask.binLocation + ' ' + filepath;
 
@@ -228,9 +228,9 @@ module.exports = function(grunt) {
 			callback(err);
 
 		});
-	});
+	};
 
-	grunt.registerHelper('convert', function(convertTask, filepath, callback) {
+	convert = function(convertTask, filepath, callback) {
 
 		var command = convertTask.binLocation + ' ' + filepath;
 
@@ -249,6 +249,6 @@ module.exports = function(grunt) {
 			callback(err);
 
 		});
-	});
+	};
 
 };
