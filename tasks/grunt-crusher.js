@@ -93,9 +93,6 @@ module.exports = function(grunt) {
             case 'pngquant':
               pngquant(crusherTasks.pngquant, tempFilePath, cbRouter);
             break;
-            case 'pngout':
-              pngout(crusherTasks.pngout, tempFilePath, cbRouter);
-            break;
             case 'convert':
               convert(crusherTasks.convert, tempFilePath, cbRouter);
             break;
@@ -195,18 +192,9 @@ module.exports = function(grunt) {
 
   pngquant = function(pngquantTask, filepath, callback) {
 
-    var command = pngquantTask.binLocation + ' -s 1 -force -ext .png 256 ';
+    var command = __dirname + '/../compiled/improved-pngquant/pngquant ' + ' -s 1 -force -ext .png 256 ';
 
     command += filepath;
-
-    exec( command, function(err) {
-      callback(err);
-    });
-  };
-
-  pngout = function(pngoutTask, filepath, callback) {
-
-    var command = pngoutTask.binLocation + ' ' + filepath;
 
     exec( command, function(err) {
       callback(err);

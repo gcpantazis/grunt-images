@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf compiled
+
 # Compile convert (ImageMagick) binary
 
 mkdir compiled
@@ -8,4 +10,11 @@ mkdir imagemagick
 curl http://www.imagemagick.org/download/ImageMagick.tar.gz | tar xvz -C imagemagick --strip-components 1
 cd imagemagick/
 ./configure
+make
+cd ../
+
+# Compile pngquant
+
+git clone git://github.com/pornel/improved-pngquant.git
+cd improved-pngquant
 make

@@ -9,39 +9,39 @@ A grunt plugin for processing images.
 
 * In your grunt.js config:
 
-	```
-	crusher: {
-		taskOne: {
-			imageDirectory: '/path/to/images/',
-			files: [
-				'/path/to/images/foo-*.png',
-			],
-			crusherTasks: {
-				pngquant: {
-					binLocation: './bin/pngquant'
-				}
-			}
-		},
-		taskTwo: {
-			imageDirectory: '/path/to/images/',
-			files: [
-				'/path/to/images/foo/*.png',
-				'/path/to/images/bar/*.png',
-				'/path/to/images/baz/*.png'
-			],
-			destination: IMAGES + '/optimized',
-			keepDirectoryStructure: true,
-			crusherTasks: {
-				pngquant: {
-					binLocation: './bin/pngquant'
-				},
-				pngout: {
-					binLocation: './bin/pngout'
-				}
-			}
-		}
-	}
-	```
+  ```
+  crusher: {
+    taskOne: {
+      imageDirectory: '/path/to/images/',
+      files: [
+        '/path/to/images/foo-*.png',
+      ],
+      crusherTasks: {
+        convert: {
+          resizeDimension: '66%'
+        },
+        pngquant: {
+          binLocation: './bin/pngquant'
+        }
+      }
+    },
+    taskTwo: {
+      imageDirectory: '/path/to/images/',
+      files: [
+        '/path/to/images/foo/*.png',
+        '/path/to/images/bar/*.png',
+        '/path/to/images/baz/*.png'
+      ],
+      destination: IMAGES + '/optimized',
+      keepDirectoryStructure: true,
+      crusherTasks: {
+        pngquant: {
+          binLocation: './bin/pngquant'
+        }
+      }
+    }
+  }
+  ```
 
 ##Settings
 
@@ -60,8 +60,6 @@ A grunt plugin for processing images.
 ##Supported Libraries
 
 `pngquant`
-
-`pngout`
 
 `convert` : Experimental; I have it configured with a global install that I compile per-machine, which seems to be the way to go with imagemagick. See the tests for usage.
 
