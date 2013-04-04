@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Compile convert (ImageMagick) binary
+
+mkdir compiled
+cd compiled
+mkdir imagemagick
+curl http://www.imagemagick.org/download/ImageMagick.tar.gz | tar xvz -C imagemagick --strip-components 1
+cd imagemagick/
+./configure
+make

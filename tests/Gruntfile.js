@@ -84,7 +84,6 @@ module.exports = function(grunt) {
 				outputSuffix: '_thumb',
 				crusherTasks: {
 					convert: {
-						binLocation: BINS + '/convert',
 						resizeDimension: '300x300',
 						quality: 25
 					}

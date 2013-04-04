@@ -8,247 +8,228 @@
 
 module.exports = function(grunt) {
 
-	var exec = require('child_process').exec;
-	var _ = require('underscore');
-
-	grunt.registerMultiTask( 'crusher', 'Crushes your images.', function() {
-
-		// Tell grunt this task is asynchronous.
-		var done = this.async(),
-			imageDirectory = this.data.imageDirectory,
-			crusherTasks = this.data.crusherTasks,
-			dest = this.data.destination,
-			keepDirectoryStructure = this.data.keepDirectoryStructure,
-			outputSuffix = this.data.outputSuffix,
-			files = grunt.file.expand(this.data.files),
-			fileCount = files.length;
-
-		if ( !crusherTasks ) {
-			grunt.log.error('Crusher Error: crusherTasks was not defined.');
-			done(false);
-			return;
-		}
-
-		if ( !dest && outputSuffix ) {
-			grunt.log.error('Crusher Error: "outputSuffix" was set, but "destination" was not. Please set both if using "outputSuffix".');
-			done(false);
-			return;
-		}
-
-		if ( !imageDirectory ) {
-			grunt.log.error('Crusher Error: imageDirectory was not defined.');
-			done(false);
-			return;
-		}
+  var exec = require('child_process').exec;
+  var _ = require('underscore');
+
+  grunt.registerMultiTask( 'crusher', 'Crushes your images.', function() {
+
+    // Tell grunt this task is asynchronous.
+    var done = this.async(),
+      imageDirectory = this.data.imageDirectory,
+      crusherTasks = this.data.crusherTasks,
+      dest = this.data.destination,
+      keepDirectoryStructure = this.data.keepDirectoryStructure,
+      outputSuffix = this.data.outputSuffix,
+      files = grunt.file.expand(this.data.files),
+      fileCount = files.length;
+
+    if ( !crusherTasks ) {
+      grunt.log.error('Crusher Error: crusherTasks was not defined.');
+      done(false);
+      return;
+    }
+
+    if ( !dest && outputSuffix ) {
+      grunt.log.error('Crusher Error: "outputSuffix" was set, but "destination" was not. Please set both if using "outputSuffix".');
+      done(false);
+      return;
+    }
+
+    if ( !imageDirectory ) {
+      grunt.log.error('Crusher Error: imageDirectory was not defined.');
+      done(false);
+      return;
+    }
+
+    if ( files.length === 0 ) {
+      grunt.log.error('Crusher Error: No images matched.');
+      done(true);
+      return;
+    }
+
+    var fileIterator = 0;
+
+    if ( dest !== undefined ) {
+      grunt.file.mkdir(dest);
+    }
+
+    files.forEach(function( filepath ) {
+
+      if ( !filepath.match(imageDirectory) ) {
+        grunt.log.error('Crusher Error: File ' + filepath + ' was not within imageDirectory. Skipping.');
+        fileIterator++;
+        return;
+      }
 
-		if ( files.length === 0 ) {
-			grunt.log.error('Crusher Error: No images matched.');
-			done(true);
-			return;
-		}
+      var tempFilePath;
+      var tasks = [];
+      var cbIterator = 0;
 
-		var fileIterator = 0;
+      for ( var i in crusherTasks ) {
+        tasks.push(i);
+      }
 
-		if ( dest !== undefined ) {
-			grunt.file.mkdir(dest);
-		}
+      var cbRouter = function(err) {
 
-		files.forEach(function( filepath ) {
+        if (err) {
+          grunt.warn(err);
+          done(false);
+          return;
+        }
+
+        cbIterator++;
+        doNextProcess(cbIterator);
+      }
+
+      var doNextProcess = function(which) {
+
+        if ( which === tasks.length ) {
+
+          fileDone();
+
+        } else {
+
+          switch (tasks[which]) {
+            case 'pngquant':
+              pngquant(crusherTasks.pngquant, tempFilePath, cbRouter);
+            break;
+            case 'pngout':
+              pngout(crusherTasks.pngout, tempFilePath, cbRouter);
+            break;
+            case 'convert':
+              convert(crusherTasks.convert, tempFilePath, cbRouter);
+            break;
+            default:
+          }
+        }
+      }
+
+      var fileDone = function() {
+
+        var destinationPath = filepath;
 
-			if ( !filepath.match(imageDirectory) ) {
-				grunt.log.error('Crusher Error: File ' + filepath + ' was not within imageDirectory. Skipping.');
-				fileIterator++;
-				return;
-			}
+        if ( dest !== undefined ) {
 
-			var tempFilePath;
-			var tasks = [];
-			var cbIterator = 0;
+          if ( !keepDirectoryStructure ) {
+            destinationPath = dest + '/' + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
+          } else {
+            var relativeFilePath = filepath.split(imageDirectory)[1],
+              fileName = filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0],
+              relativeDirectory = relativeFilePath.split(fileName)[0];
 
-			for ( var i in crusherTasks ) {
+            destinationPath = dest + relativeDirectory + fileName;
+          }
 
-				if (!crusherTasks[i].binLocation) {
-					grunt.log.error('Crusher Error: Task ' + i + ' did not provide a bin location.');
-					return;
-				}
+          if ( outputSuffix ) {
 
-				tasks.push(i);
-			}
+            var splitPath = destinationPath.split('.');
+            splitPath[splitPath.length - 2] += outputSuffix;
+            destinationPath = splitPath.join('.');
+          }
+        }
 
-			var cbRouter = function(err) {
+        updateOriginalFile(filepath, destinationPath, tempFilePath);
+        deleteTempFile(tempFilePath, function() {
 
-				if (err) {
-					grunt.warn(err);
-					done(false);
-					return;
-				}
+          fileIterator++
 
-				cbIterator++;
-				doNextProcess(cbIterator);
-			}
+          if ( fileIterator === fileCount ) {
+            done();
+          }
+        });
+      }
 
-			var doNextProcess = function(which) {
+      createTempFile(filepath, function(tempPath){
 
-				if ( which === tasks.length ) {
+        tempFilePath = tempPath;
+        doNextProcess(0);
+      });
+    });
+  });
 
-					fileDone();
+  var createTempFile = function(originalPath, callback){
 
-				} else {
+    var tempPath = originalPath;
 
-					switch (tasks[which]) {
-						case 'pngquant':
-							pngquant(crusherTasks.pngquant, tempFilePath, cbRouter);
-						break;
-						case 'pngout':
-							pngout(crusherTasks.pngout, tempFilePath, cbRouter);
-						break;
-						case 'convert':
-							convert(crusherTasks.convert, tempFilePath, cbRouter);
-						break;
-						default:
-					}
-				}
-			}
+    // This should be smarter, obvious ways this could fail.
+    tempPath = tempPath.replace('.png', '-gruntCrusherTemp.png');
+    tempPath = tempPath.replace('.jpg', '-gruntCrusherTemp.jpg');
 
-			var fileDone = function() {
+    grunt.file.copy(originalPath, tempPath);
 
-				var destinationPath = filepath;
+    callback(tempPath);
+  };
 
-				if ( dest !== undefined ) {
+  updateOriginalFile = function(originalPath, destinationPath, tempPath){
 
-					if ( !keepDirectoryStructure ) {
-						destinationPath = dest + '/' + filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0];
-					} else {
-						var relativeFilePath = filepath.split(imageDirectory)[1],
-							fileName = filepath.match(/([\w\d_-]*)\.?[^\\\/]*$/i)[0],
-							relativeDirectory = relativeFilePath.split(fileName)[0];
+    var oldFile = grunt.file.read(originalPath);
+    var newFile = grunt.file.read(tempPath);
+    var savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
 
-						destinationPath = dest + relativeDirectory + fileName;
-					}
+    if ( originalPath !== destinationPath ) {
 
-					if ( outputSuffix ) {
+      grunt.log.writeln(
+        'CRUSHED: ' +
+        originalPath +
+        ' => ' +
+        destinationPath +
+        ' [ ' + savings + '% Compression ]'
+      );
+    } else {
+      grunt.log.writeln(
+        'CRUSHED: ' +
+        originalPath +
+        ' [ ' + savings + '% Compression ]'
+      );
+    }
 
-						var splitPath = destinationPath.split('.');
-						splitPath[splitPath.length - 2] += outputSuffix;
-						destinationPath = splitPath.join('.');
+    grunt.file.copy(tempPath, destinationPath);
+  };
 
-					}
+  deleteTempFile = function(path, callback){
 
-				}
+    exec('rm ' + path, function(){
+      if (callback) callback();
+    });
+  };
 
-				updateOriginalFile(filepath, destinationPath, tempFilePath);
-				deleteTempFile(tempFilePath, function() {
+  pngquant = function(pngquantTask, filepath, callback) {
 
-					fileIterator++
+    var command = pngquantTask.binLocation + ' -s 1 -force -ext .png 256 ';
 
-					if ( fileIterator === fileCount ) {
-						done();
-					}
+    command += filepath;
 
-				});
-			}
+    exec( command, function(err) {
+      callback(err);
+    });
+  };
 
-			createTempFile(filepath, function(tempPath){
+  pngout = function(pngoutTask, filepath, callback) {
 
-				tempFilePath = tempPath;
-				doNextProcess(0);
+    var command = pngoutTask.binLocation + ' ' + filepath;
 
-			});
+    exec( command, function(err) {
+      callback(err);
+    });
+  };
 
-		});
-	});
+  convert = function(convertTask, filepath, callback) {
 
-	var createTempFile = function(originalPath, callback){
+    var command = __dirname + '/../compiled/imagemagick/utilities/convert ' + filepath;
 
-		var tempPath = originalPath;
+    if ( convertTask.resizeDimension ) {
+      command += ' -resize ' + convertTask.resizeDimension;
+    }
 
-		// This should be smarter, obvious ways this could fail.
-		tempPath = tempPath.replace('.png', '-gruntCrusherTemp.png');
-		tempPath = tempPath.replace('.jpg', '-gruntCrusherTemp.jpg');
+    if ( convertTask.quality ) {
+      command += ' -quality ' + convertTask.quality;
+    }
 
-		grunt.file.copy(originalPath, tempPath);
+    command += ' ' + filepath;
 
-		callback(tempPath);
-	};
-
-	updateOriginalFile = function(originalPath, destinationPath, tempPath){
-
-		var oldFile = grunt.file.read(originalPath);
-		var newFile = grunt.file.read(tempPath);
-		var savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
-
-		if ( originalPath !== destinationPath ) {
-
-			grunt.log.writeln(
-				'CRUSHED: ' +
-				originalPath +
-				' => ' +
-				destinationPath +
-				' [ ' + savings + '% Compression ]'
-			);
-		} else {
-			grunt.log.writeln(
-				'CRUSHED: ' +
-				originalPath +
-				' [ ' + savings + '% Compression ]'
-			);
-		}
-
-		grunt.file.copy(tempPath, destinationPath);
-
-	};
-
-	deleteTempFile = function(path, callback){
-
-		exec('rm ' + path, function(){
-			if (callback) callback();
-		});
-
-	};
-
-	pngquant = function(pngquantTask, filepath, callback) {
-
-		var command = pngquantTask.binLocation + ' -s 1 -force -ext .png 256 ';
-
-		command += filepath;
-
-		exec( command, function(err) {
-
-			callback(err);
-
-		});
-	};
-
-	pngout = function(pngoutTask, filepath, callback) {
-
-		var command = pngoutTask.binLocation + ' ' + filepath;
-
-		exec( command, function(err) {
-
-			callback(err);
-
-		});
-	};
-
-	convert = function(convertTask, filepath, callback) {
-
-		var command = convertTask.binLocation + ' ' + filepath;
-
-		if ( convertTask.resizeDimension ) {
-			command += ' -resize ' + convertTask.resizeDimension;
-		}
-
-		if ( convertTask.quality ) {
-			command += ' -quality ' + convertTask.quality;
-		}
-
-		command += ' ' + filepath;
-
-		exec( command, function(err) {
-
-			callback(err);
-
-		});
-	};
+    exec( command, function(err) {
+      callback(err);
+    });
+  };
 
 };
