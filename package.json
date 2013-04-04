@@ -1,7 +1,7 @@
 {
   "name": "grunt-images",
   "description": "A grunt plugin for processing images.",
-  "version": "0.1.16",
+  "version": "0.2.0",
   "homepage": "https://github.com/gcpantazis/grunt-images",
   "author": {
     "name": "George Pantazis",

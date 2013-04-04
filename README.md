@@ -61,7 +61,7 @@ A grunt plugin for processing images. As of `v0.1.16` the supported libraries ar
 
 ##Changelog
 
-Current: v0.1.16
+Current: v0.2.0
 
 Major Changes:
 
