@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       plainCrush: {
         imageDirectory: IMAGES,
         files: IMAGES + '/mag-glass.png',
-        destination: 'tmp',
+        destination: 'tmp/optimized',
         options: {}
       },
 
@@ -21,57 +21,49 @@ module.exports = function(grunt) {
         keepDirectoryStructure: true,
         options: {}
       }
+    },
 
-      // PNGmedium: {
-      //   imageDirectory: IMAGES,
-      //   files: IMAGES + '/deep/directory/foo/*.png',
-      //   destination: 'tmp/optimized/resizes',
-      //   outputSuffix: '_medium',
-      //   keepDirectoryStructure: true,
-      //   tasks: {
-      //     convert: {
-      //       resizeDimension: '66%'
-      //     },
-      //     pngquant: {
-      //     }
-      //   }
-      // },
+    "images-convert": {
 
-      // PNGsmall: {
-      //   imageDirectory: IMAGES,
-      //   files: IMAGES + '/deep/directory/foo/*.png',
-      //   destination: 'tmp/optimized/resizes',
-      //   outputSuffix: '_small',
-      //   keepDirectoryStructure: true,
-      //   tasks: {
-      //     convert: {
-      //       resizeDimension: '33%'
-      //     },
-      //     pngquant: {
-      //     }
-      //   }
-      // },
+      PNGmedium: {
+        imageDirectory: IMAGES,
+        files: IMAGES + '/deep/directory/foo/*.png',
+        destination: 'tmp/optimized/resizes',
+        outputSuffix: '_medium',
+        keepDirectoryStructure: true,
+        options: {
+          resizeDimension: '66%'
+        }
+      },
 
-      // JPEGresize: {
-      //   imageDirectory: IMAGES,
-      //   files: IMAGES + '/resize_originals/*.jpg',
-      //   destination: 'tmp/optimized/jpeg_resizes',
-      //   outputSuffix: '_thumb',
-      //   tasks: {
-      //     convert: {
-      //       resizeDimension: '300x300',
-      //       quality: 25
-      //     }
-      //   }
-      // }
+      PNGsmall: {
+        imageDirectory: IMAGES,
+        files: IMAGES + '/deep/directory/foo/*.png',
+        destination: 'tmp/optimized/resizes',
+        outputSuffix: '_small',
+        keepDirectoryStructure: true,
+        options: {
+          resizeDimension: '33%'
+        }
+      },
+
+      JPEGresize: {
+        imageDirectory: IMAGES,
+        files: IMAGES + '/resize_originals/*.jpg',
+        destination: 'tmp/optimized/jpeg_resizes',
+        outputSuffix: '_thumb',
+        options: {
+          resizeDimension: '300x300'
+        }
+      }
 
     }
 
   });
 
   // Default task.
-  grunt.registerTask('default', 'images-pngquant');
-  grunt.registerTask('test', 'images-pngquant');
+  grunt.registerTask('default', ['images-pngquant', 'images-convert']);
+  grunt.registerTask('test', ['images-pngquant', 'images-convert']);
 
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');

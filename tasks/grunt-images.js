@@ -94,6 +94,7 @@ module.exports = function(grunt) {
 
       createTempFile(filepath, function(tempPath){
         tempFilePath = tempPath;
+
         switch (buildType) {
           case 'images-pngquant':
             pngquant(currentTask.data.options, tempFilePath, fileDone);
@@ -112,7 +113,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerMultiTask('images-convert', 'Manipulate images with Imagemagick.', function() {
-    runner('convert');
+    runner('images-convert');
   });
 
   var createTempFile = function(sourcePath, callback){
