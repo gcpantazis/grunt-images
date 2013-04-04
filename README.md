@@ -1,4 +1,4 @@
-#grunt-crusher
+#grunt-crusher [![Build Status](https://api.travis-ci.org/gcpantazis/grunt-crusher.png?branch=master)](http://travis-ci.org/gcpantazis/grunt-crusher)
 
 A grunt plugin for processing images. As of `v0.1.16` the supported libraries are compiled on the target machine on installation.
 
@@ -81,4 +81,3 @@ Major Changes:
 ## License
 Copyright (c) 2012 George Pantazis
 Licensed under the MIT license.
-
