@@ -1,6 +1,6 @@
 #grunt-crusher
 
-A grunt plugin for processing images.
+A grunt plugin for processing images. As of `v0.1.16` the supported libraries are compiled on the target machine on installation.
 
 ##How to use
 
@@ -21,7 +21,6 @@ A grunt plugin for processing images.
           resizeDimension: '66%'
         },
         pngquant: {
-          binLocation: './bin/pngquant'
         }
       }
     },
@@ -36,7 +35,6 @@ A grunt plugin for processing images.
       keepDirectoryStructure: true,
       crusherTasks: {
         pngquant: {
-          binLocation: './bin/pngquant'
         }
       }
     }
@@ -61,14 +59,15 @@ A grunt plugin for processing images.
 
 `pngquant`
 
-`convert` : Experimental; I have it configured with a global install that I compile per-machine, which seems to be the way to go with imagemagick. See the tests for usage.
+`convert`
 
 ##Changelog
 
-Current: v0.1.15
+Current: v0.1.16
 
 Major Changes:
 
+* v0.1.16 Make `convert` (imagemagick) and `pngquant` compile on install, rather than requiring a bin location. Remove `pngout` since it can't be compiled / is close-sourced.
 * v0.1.15 Upgrade for Grunt 0.4 compatibility.
 * v0.1.12 Added `outputSuffix`.
 * v0.1.10 Added experimental support for `convert`, initially for resize.
