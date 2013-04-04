@@ -84,13 +84,13 @@ module.exports = function(grunt) {
         updateOriginalFile(filepath, destinationPath, tempFilePath);
         deleteTempFile(tempFilePath, function() {
 
-          fileIterator++
+          fileIterator++;
 
           if ( fileIterator === fileCount ) {
             done();
           }
         });
-      }
+      };
 
       createTempFile(filepath, function(tempPath){
         tempFilePath = tempPath;
@@ -128,7 +128,7 @@ module.exports = function(grunt) {
     callback(tempPath);
   };
 
-  updateOriginalFile = function(sourcePath, destinationPath, tempPath){
+  var updateOriginalFile = function(sourcePath, destinationPath, tempPath){
 
     var oldFile = grunt.file.read(sourcePath),
         newFile = grunt.file.read(tempPath),
@@ -153,14 +153,14 @@ module.exports = function(grunt) {
     grunt.file.copy(tempPath, destinationPath);
   };
 
-  deleteTempFile = function(path, callback){
+  var deleteTempFile = function(path, callback){
 
     exec('rm ' + path, function(){
-      if (callback) callback();
+      if (callback) { callback(); }
     });
   };
 
-  pngquant = function(options, filepath, callback) {
+  var pngquant = function(options, filepath, callback) {
 
     var colorCount = options.colorCount || 256,
         command = __dirname + '/../compiled/improved-pngquant/pngquant -s 1 -force -ext .png ';
@@ -174,7 +174,7 @@ module.exports = function(grunt) {
     });
   };
 
-  convert = function(convertTask, filepath, callback) {
+  var convert = function(convertTask, filepath, callback) {
 
     var command = __dirname + '/../compiled/imagemagick/utilities/convert ' + filepath;
 

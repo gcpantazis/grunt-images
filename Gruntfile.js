@@ -4,6 +4,21 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
+    jshint: {
+      all: [
+        'Gruntfile.js',
+        'tasks/*.js'
+      ],
+      options: {
+        jshintrc: '.jshintrc'
+      }
+    },
+
+    // Before generating any new files, remove any previously-created files.
+    clean: {
+      test: ['tmp']
+    },
+
     "images-pngquant": {
 
       plainCrush: {
@@ -56,14 +71,12 @@ module.exports = function(grunt) {
           resizeDimension: '300x300'
         }
       }
-
     }
-
   });
 
   // Default task.
-  grunt.registerTask('default', ['images-pngquant', 'images-convert']);
-  grunt.registerTask('test', ['images-pngquant', 'images-convert']);
+  grunt.registerTask('test', ['clean', 'jshint', 'images-pngquant', 'images-convert']);
+  grunt.registerTask('default', ['test']);
 
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
@@ -72,5 +85,4 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
-
 };
