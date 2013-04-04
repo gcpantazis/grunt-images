@@ -1,22 +1,22 @@
-#grunt-crusher [![Build Status](https://api.travis-ci.org/gcpantazis/grunt-crusher.png?branch=master)](http://travis-ci.org/gcpantazis/grunt-crusher)
+#grunt-images [![Build Status](https://api.travis-ci.org/gcpantazis/grunt-images.png?branch=master)](http://travis-ci.org/gcpantazis/grunt-images)
 
 A grunt plugin for processing images. As of `v0.1.16` the supported libraries are compiled on the target machine on installation.
 
 ##How to use
 
-* Install with: ```npm install grunt-crusher```.
-* Call ```grunt.loadNpmTasks('grunt-crusher')``` in grunt.js
+* Install with: ```npm install grunt-images```.
+* Call ```grunt.loadNpmTasks('grunt-images')``` in grunt.js
 
 * In your grunt.js config:
 
   ```
-  crusher: {
+  images: {
     taskOne: {
       imageDirectory: '/path/to/images/',
       files: [
         '/path/to/images/foo-*.png',
       ],
-      crusherTasks: {
+      tasks: {
         convert: {
           resizeDimension: '66%'
         },
@@ -33,7 +33,7 @@ A grunt plugin for processing images. As of `v0.1.16` the supported libraries ar
       ],
       destination: IMAGES + '/optimized',
       keepDirectoryStructure: true,
-      crusherTasks: {
+      tasks: {
         pngquant: {
         }
       }
@@ -45,15 +45,13 @@ A grunt plugin for processing images. As of `v0.1.16` the supported libraries ar
 
 `imageDirectory` ***required*** : Used to determine relative filepaths, in case you want to preserve the directory structure in the output folder. Files that aren't within this folder will be rejected.
 
-`files` ***required*** : Array of files / wildcards for crusher to iterate through.
+`files` ***required*** : Array of files / wildcards for images to iterate through.
 
 `destination` *optional* : If provided, copies files to the destination directory after optimizations are complete. If omitted, replaces original with optimized file.
 
 `outputSuffix` *optional* : Use to add a suffix onto output filenames (someimage.jpg -> someimage_foo.jpg). Requires `destination`.
 
 `keepDirectoryStructure` *optional* : If omitted or set to false, the destination folder will be flat. If set to true, destination folder will contain the original files' folder structure relative to `imageDirectory`.
-
-`crusherTasks` ***required*** : Configure each bin. (TODO: Add config options in *supported libraries* section once available).
 
 ##Supported Libraries
 
