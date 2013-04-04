@@ -8,8 +8,7 @@
 
 module.exports = function(grunt) {
 
-  var exec = require('child_process').exec,
-      _ = require('underscore');
+  var exec = require('child_process').exec;
 
   var runner = function(buildType) {
 
