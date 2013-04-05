@@ -1,6 +1,6 @@
 #grunt-images [![Build Status](https://api.travis-ci.org/gcpantazis/grunt-images.png?branch=master)](http://travis-ci.org/gcpantazis/grunt-images)
 
-A grunt plugin for processing images. As of `v0.1.16` the supported libraries are compiled on the target machine on installation.
+A grunt plugin for processing images. Libraries are automatically downloaded and compiled for the plugin to use, if needed or specified in the options.
 
 ##How to use
 
@@ -10,32 +10,47 @@ A grunt plugin for processing images. As of `v0.1.16` the supported libraries ar
 * In your grunt.js config:
 
   ```
-  images: {
-    taskOne: {
-      imageDirectory: '/path/to/images/',
-      files: [
-        '/path/to/images/foo-*.png',
-      ],
-      tasks: {
-        convert: {
-          resizeDimension: '66%'
-        },
-        pngquant: {
-        }
+  "images-pngquant": {
+
+    basic: {
+      imageDirectory: 'images,
+      files: 'images/bar.png',
+      destination: 'tmp/optimized',
+      options: {}
+    },
+
+    low-color: {
+      imageDirectory: 'images',
+      files: 'images/deep/directory/foo/*.png',
+      destination: 'tmp/optimized/resizes',
+      outputSuffix: '_full',
+      keepDirectoryStructure: true,
+      options: {
+        colorCount: 20
+      }
+    }
+  },
+
+  "images-convert": {
+
+    png-resize: {
+      imageDirectory: 'images',
+      files: 'images/deep/directory/foo/*.png',
+      destination: 'tmp/optimized/resizes',
+      outputSuffix: '_small',
+      keepDirectoryStructure: true,
+      options: {
+        resize: '33%'
       }
     },
-    taskTwo: {
-      imageDirectory: '/path/to/images/',
-      files: [
-        '/path/to/images/foo/*.png',
-        '/path/to/images/bar/*.png',
-        '/path/to/images/baz/*.png'
-      ],
-      destination: IMAGES + '/optimized',
-      keepDirectoryStructure: true,
-      tasks: {
-        pngquant: {
-        }
+
+    jpg-resize: {
+      imageDirectory: 'images',
+      files: 'images/resize_originals/*.jpg',
+      destination: 'tmp/optimized/jpeg_resizes',
+      outputSuffix: '_thumb',
+      options: {
+        resize: '300x300'
       }
     }
   }
@@ -53,18 +68,25 @@ A grunt plugin for processing images. As of `v0.1.16` the supported libraries ar
 
 `keepDirectoryStructure` *optional* : If omitted or set to false, the destination folder will be flat. If set to true, destination folder will contain the original files' folder structure relative to `imageDirectory`.
 
+`alwaysCompile` *optional* : If true, `grunt-images` will compile the necessary library even if they are already available on the system.
+
 ##Supported Libraries
 
-`pngquant`
+###pngquant
 
-`convert`
+* `colorCount`: *Number, 0-256*, number of colors that should be used to quantize the PNG's color channels to 8-bit.
+
+###convert
+
+* `resize`: Passes an option to convert's resize flag. See imagemagick [documentation on this feature](http://www.imagemagick.org/Usage/resize/) for possible inputs.
 
 ##Changelog
 
-Current: v0.2.0
+Current: v0.2.1
 
 Major Changes:
 
+* v0.2.0 Make separate multiTasks for each library.
 * v0.1.16 Make `convert` (imagemagick) and `pngquant` compile on install, rather than requiring a bin location. Remove `pngout` since it can't be compiled / is close-sourced.
 * v0.1.15 Upgrade for Grunt 0.4 compatibility.
 * v0.1.12 Added `outputSuffix`.

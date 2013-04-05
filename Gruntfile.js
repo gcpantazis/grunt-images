@@ -34,7 +34,9 @@ module.exports = function(grunt) {
         destination: 'tmp/optimized/resizes',
         outputSuffix: '_full',
         keepDirectoryStructure: true,
-        options: {}
+        options: {
+          colorCount: 20
+        }
       }
     },
 
@@ -47,7 +49,7 @@ module.exports = function(grunt) {
         outputSuffix: '_medium',
         keepDirectoryStructure: true,
         options: {
-          resizeDimension: '66%'
+          resize: '66%'
         }
       },
 
@@ -58,7 +60,7 @@ module.exports = function(grunt) {
         outputSuffix: '_small',
         keepDirectoryStructure: true,
         options: {
-          resizeDimension: '33%'
+          resize: '33%'
         }
       },
 
@@ -68,14 +70,20 @@ module.exports = function(grunt) {
         destination: 'tmp/optimized/jpeg_resizes',
         outputSuffix: '_thumb',
         options: {
-          resizeDimension: '300x300'
+          resize: '300x300'
         }
       }
+    },
+
+    // Unit tests.
+    "nodeunit": {
+      tests: ['tests/*_test.js']
     }
+
   });
 
   // Default task.
-  grunt.registerTask('test', ['clean', 'jshint', 'images-pngquant', 'images-convert']);
+  grunt.registerTask('test', ['clean', 'jshint', 'images-pngquant', 'images-convert', 'nodeunit']);
   grunt.registerTask('default', ['test']);
 
   // Actually load this plugin's task(s).

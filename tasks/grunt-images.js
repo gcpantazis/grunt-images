@@ -173,16 +173,16 @@ module.exports = function(grunt) {
     });
   };
 
-  var convert = function(convertTask, filepath, callback) {
+  var convert = function(options, filepath, callback) {
 
     var command = __dirname + '/../compiled/imagemagick/utilities/convert ' + filepath;
 
-    if ( convertTask.resizeDimension ) {
-      command += ' -resize ' + convertTask.resizeDimension;
+    if ( options.resize ) {
+      command += ' -resize ' + options.resize;
     }
 
-    if ( convertTask.quality ) {
-      command += ' -quality ' + convertTask.quality;
+    if ( options.quality ) {
+      command += ' -quality ' + options.quality;
     }
 
     command += ' ' + filepath;
