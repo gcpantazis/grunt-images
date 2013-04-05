@@ -9,7 +9,7 @@ A grunt plugin for processing images. Libraries are automatically downloaded and
 
 * In your grunt.js config:
 
-  ```
+```
   "images-pngquant": {
 
     basic: {
@@ -54,7 +54,7 @@ A grunt plugin for processing images. Libraries are automatically downloaded and
       }
     }
   }
-  ```
+```
 
 ##Settings
 
