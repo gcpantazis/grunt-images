@@ -19,8 +19,8 @@ module.exports = function(grunt) {
         dest = currentTask.data.destination,
         keepDirectoryStructure = currentTask.data.keepDirectoryStructure,
         outputSuffix = currentTask.data.outputSuffix,
-        files = grunt.file.expand(currentTask.data.files),
-        fileCount = files.length;
+        files = getFiles(currentTask),
+        fileCount = getFileCount(files);
 
     if ( !dest && outputSuffix ) {
       grunt.log.error('Images Error: "outputSuffix" was set, but "destination" was not. Please set both if using "outputSuffix".');
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       return;
     }
 
-    if ( files.length === 0 ) {
+    if ( fileCount === 0 ) {
       grunt.log.error('Images Error: No images matched.');
       done(true);
       return;
@@ -46,8 +46,7 @@ module.exports = function(grunt) {
       grunt.file.mkdir(dest);
     }
 
-    files.forEach(function( filepath ) {
-
+    eachFile(files, function( filepath ) {
       var tempFilePath;
 
       if ( !filepath.match(imageDirectory) ) {
@@ -190,5 +189,32 @@ module.exports = function(grunt) {
     exec( command, function(err) {
       callback(err);
     });
+  };
+
+  var eachFile = function (files, cb) {
+    files.forEach(function (file) {
+      file.src.forEach(cb);
+    });
+  };
+
+  var getFileCount = function (files) {
+    var count = 0;
+
+    files.forEach(function (file) {
+      count += file.src.length;
+    });
+
+    return count;
+  };
+
+  var getFiles = function (currentTask) {
+    //Backward compatibility
+    if (typeof currentTask.data.files === "string") {
+      return [{
+        src: grunt.file.expand(currentTask.data.files)
+      }];
+    }
+
+    return currentTask.files;
   };
 };

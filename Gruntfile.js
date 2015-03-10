@@ -72,6 +72,19 @@ module.exports = function(grunt) {
         options: {
           resize: '300x300'
         }
+      },
+
+      SrcAsArray: {
+        imageDirectory: IMAGES,
+        src: [
+          IMAGES + '/deep/directory/foo/*.png'
+        ],
+        destination: 'tmp/optimized/src_as_array',
+        outputSuffix: '_medium',
+        keepDirectoryStructure: false,
+        options: {
+          resize: '66%'
+        }
       }
     },
 
