@@ -1,8 +1,8 @@
-#grunt-images [![Build Status](https://api.travis-ci.org/gcpantazis/grunt-images.png?branch=master)](http://travis-ci.org/gcpantazis/grunt-images)
+# grunt-images [![Build Status](https://api.travis-ci.org/gcpantazis/grunt-images.png?branch=master)](http://travis-ci.org/gcpantazis/grunt-images)
 
 A grunt plugin for processing images. Libraries are automatically downloaded and compiled for the plugin to use, if needed or specified in the options.
 
-##How to use
+## How to use
 
 * Install with: ```npm install grunt-images```.
 * Call ```grunt.loadNpmTasks('grunt-images')``` in grunt.js
@@ -56,7 +56,7 @@ A grunt plugin for processing images. Libraries are automatically downloaded and
   }
 ```
 
-##Settings
+## Settings
 
 `imageDirectory` ***required*** : Used to determine relative filepaths, in case you want to preserve the directory structure in the output folder. Files that aren't within this folder will be rejected.
 
@@ -70,17 +70,17 @@ A grunt plugin for processing images. Libraries are automatically downloaded and
 
 `alwaysCompile` *optional* : If true, `grunt-images` will compile the necessary library even if they are already available on the system.
 
-##Supported Libraries
+## Supported Libraries
 
-###pngquant
+### pngquant
 
 * `colorCount`: *Number, 0-256*, number of colors that should be used to quantize the PNG's color channels to 8-bit.
 
-###convert
+### convert
 
 * `resize`: Passes an option to convert's resize flag. See imagemagick [documentation on this feature](http://www.imagemagick.org/Usage/resize/) for possible inputs.
 
-##Changelog
+## Changelog
 
 Current: v0.2.1
 
